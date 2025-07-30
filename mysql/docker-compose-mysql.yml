@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:latest
+    restart: no
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: no
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  mysql_data:
