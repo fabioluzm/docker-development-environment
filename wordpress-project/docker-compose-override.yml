@@ -5,4 +5,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: null
+    volumes:
+      - .:/var/www/html
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_HOST: ${DB_HOST}
