@@ -9,7 +9,7 @@ services:
     command: >
       sh -c '
         echo "Creating database and user..." &&
-        mysql -h ${DB_HOST} -u root -prootpassword -e "
+        mysql -h "${DB_HOST}" -u root -prootpassword -e "
           CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
           CREATE USER IF NOT EXISTS '\''${DB_USER}'\''@'\''%'\'' IDENTIFIED BY '\''${DB_PASSWORD}'\'';
           GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '\''${DB_USER}'\''@'\''%'\''; 
@@ -17,10 +17,11 @@ services:
         " &&
         if [ -f /dump.sql ]; then
           echo "Importing dump.sql..." &&
-          mysql -h ${DB_HOST} -u ${DB_USER} -p${DB_PASSWORD} ${DB_NAME} < /dump.sql
+          cat /dump.sql | mysql -h "${DB_HOST}" -u "${DB_USER}" -p"${DB_PASSWORD}" "${DB_NAME}"
         else
           echo "No dump.sql found, skipping import."
         fi
       '
+
     network_mode: host
     restart: 'no'
