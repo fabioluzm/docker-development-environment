@@ -1,0 +1,40 @@
+name: Postgres
+services:
+  postgres:
+    image: postgres:15
+    container_name: db-server
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - '${PG_PORT}:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - pgdbnetwork
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '${PGADMIN_PORT}:80'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      # mount a host dumps folder into pgAdmin (optional)
+      # uncomment the next line once DUMPS_HOST_PATH is set in .env
+      - ${DUMPS_HOST_PATH}:/var/lib/pgadmin/storage/${PGADMIN_EMAIL}/dumps
+    networks:
+      - pgdbnetwork
+
+volumes:
+  pgdata:
+  pgadmin_data:
+
+networks:
+  pgdbnetwork:
+    driver: bridge
