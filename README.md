@@ -27,13 +27,22 @@ repository
 
 ## PostgreSQL
 
-- Run `docker compose -f docker-compose-postgres.yml`
+- Create `.env` with desired variables
+
+```bash
+make up        # start postgres + pgadmin
+make ps        # see containers
+make logs      # tail logs
+make down      # stop (keep data)
+make nuke      # stop + DELETE data volumes
+make save-images / load-images  # offline kit
+```
 
 ```
 postgres
-  ├── user: `admin`
-  ├── password: `admin`
-  └── port: `5432`
+  ├── user: `set on .env`
+  ├── password: `set on .env`
+  └── port: `set on .env`
 ```
 
 ## MySQL
@@ -47,7 +56,7 @@ mysql
 phpmyadmin
   ├── port: 8080
   ├── user: root
-  └── root_password: rootpassword
+  └── root_password: root
 ```
 
 ## WordPress Project Environment
@@ -76,9 +85,16 @@ WordPress project uses `Makerfile` to create and run the environment
 
 1. PostgreSQL environment (once):
 
-   ```bash
-   docker compose -f docker-compose-postgres.yml up -d
-   ```
+    - Create `.env` with desired variables
+    
+    ```bash
+    make up        # start postgres + pgadmin
+    make ps        # see containers
+    make logs      # tail logs
+    make down      # stop (keep data)
+    make nuke      # stop + DELETE data volumes
+    make save-images / load-images  # offline kit
+    ```
 
 2. MySQL environment (once):
 
